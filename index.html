@@ -1,0 +1,229 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <title>pagina web</title>
+
+    <style>
+		.contenedor {
+			margin-top: 300px;	
+			display: flex;
+			justify-content: space-evenly;
+		}
+		.contenedor > * {
+			width: 350px;
+		}
+        .cosa-contenedor {
+			margin: 50px auto;
+        }
+		.cosa {
+			width: 150px;
+			position: absolute;
+			left: calc(50% - 100px);
+			top: 100px;
+		}
+    </style>
+</head>
+
+<body>
+    <h1 id="puntos">0</h1>
+	<div class="cosa-contentor">
+		<img class="cosa" src="/manzana.jpg"></img>	
+	</div>
+	<div class="contenedor">
+		<img class="azul" src="/azul.jpg"></img>
+		<img class="amarillo" src="/amarillo.jpg"></img>
+		<img class="negro" src="/negro.jpg"></img>
+	</div>
+	
+	<script>
+	
+	const colors = [ '#ffc000', '#ff3b3b', '#ff8400' ];
+    const bubbles = 25;
+
+    const explode = (x, y) => {
+        let particles = [];
+        let ratio = window.devicePixelRatio;
+        let c = document.createElement('canvas');
+        let ctx = c.getContext('2d');
+
+        c.style.position = 'absolute';
+        c.style.left = (x - 100) + 'px';
+        c.style.top = (y - 100) + 'px';
+        c.style.pointerEvents = 'none';
+        c.style.width = 200 + 'px';
+        c.style.height = 200 + 'px';
+        c.style.zIndex = 100;
+        c.width = 200 * ratio;
+        c.height = 200 * ratio;
+        document.body.appendChild(c);
+
+        for(var i = 0; i < bubbles; i++) {
+            particles.push({
+                x: c.width / 2,
+                y: c.height / 2,
+                radius: r(20, 30),
+                color: colors[Math.floor(Math.random() * colors.length)],
+                rotation: r(0, 360, true),
+                speed: r(8, 12),
+                friction: 0.9,
+                opacity: r(0, 0.5, true),
+                yVel: 0,
+                gravity: 0.1
+            });
+        }
+
+        render(particles, ctx, c.width, c.height);
+        setTimeout(() => document.body.removeChild(c), 1000);
+    }
+
+    const render = (particles, ctx, width, height) => {
+        requestAnimationFrame(() => render(particles, ctx, width, height));
+        ctx.clearRect(0, 0, width, height);
+
+        particles.forEach((p, i) => {
+            p.x += p.speed * Math.cos(p.rotation * Math.PI / 180);
+            p.y += p.speed * Math.sin(p.rotation * Math.PI / 180);
+
+            p.opacity -= 0.01;
+            p.speed *= p.friction;
+            p.radius *= p.friction;
+            p.yVel += p.gravity;
+            p.y += p.yVel;
+
+            if(p.opacity < 0 || p.radius < 0) return;
+
+            ctx.beginPath();
+            ctx.globalAlpha = p.opacity;
+            ctx.fillStyle = p.color;
+            ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI, false);
+            ctx.fill();
+        });
+
+        return ctx;
+    }
+
+    const r = (a, b, c) => parseFloat((Math.random() * ((a ? a : 1) - (b ? b : 0)) + (b ? b : 0)).toFixed(c ? c : 0));	
+	</script>
+
+    <script>
+        var cosa = document.getElementsByClassName('cosa')[0];
+		var basura = '';
+			
+		var img = [
+			['/manzana.jpg', 'negro'],
+			['/botella.jpg', 'amarillo'],
+			['/bolsa.jpeg', 'amarillo'],
+			['/carton.jpg','azul'],
+			['/coca.jpg','amarillo'],
+			['/cuaderno.jpg','azul'],
+			['/banana.jpg','negro'],
+			['/naranja.jpg','amarillo'],
+			['/tetra.png','azul'],
+			['/papel.jpg','azul'],
+			['/mate.jpg','negro']
+		];
+		
+				gonext(cosa, false);
+
+		
+		function sacarPosition(clase) {
+			return spelem(document.getElementsByClassName(clase)[0]);
+		}
+		
+		function spelem(elem) {
+			var rect = elem.getBoundingClientRect();
+			
+			return [rect.left, rect.top, rect.right, rect.bottom];
+		}	
+		
+        cosa.ondragstart = function() {
+            return false;
+        };
+		
+		function gonext(cosa, increment, x, y) {
+		
+		
+			if (increment) {
+						document.getElementById('puntos').innerHTML++;
+			
+			explode(x, y);
+}
+
+			cosa.style.display = 'none';
+
+
+setTimeout(() => {
+
+		posicionreset(cosa);
+			var par = img[Math.floor(Math.random()*img.length)]
+			cosa.src = par[0];
+			basura = par[1];
+			setTimeout(() => { cosa.style.display = 'block'; }, 500);
+			
+		}, 250);
+		}
+		
+		function posicionreset(cosa) {
+			cosa.style.left = 'calc(50% - 100px)'
+			cosa.style.top = '100px'
+		}
+		
+		function suelto(cosa, x, y) {
+			encontrar(cosa, x, y);
+		}
+		function encontrar(cosa, x, y) {
+			// position de cosa
+			var posicion = sacarPosition('cosa');
+			
+			for (var nombre of ['negro', 'amarillo', 'azul']) {
+				var posicionBasura = sacarPosition(nombre);
+				var elem = document.getElementsByClassName(nombre);
+				if (setocan(posicion, posicionBasura) && basura === nombre) {
+					gonext(cosa, true, x, y);
+				} else {
+					posicionreset(cosa);
+				}
+			}
+		}
+		
+		function setocan(cosa1,cosa2) {
+			if ((cosa2[0] < cosa1[0] && cosa1[0] < cosa2[2] ||
+					cosa2[0] < cosa1[2] && cosa1[2] < cosa2[2])
+					&& (cosa2[1] < cosa1[1] && cosa1[1] < cosa2[3] ||
+					cosa2[1] < cosa1[3] && cosa1[1] < cosa2[3])) {
+				return true;
+			}
+		}
+		
+        cosa.onmousedown = function(event) {
+
+            cosa.style.position = 'absolute';
+            cosa.style.zIndex = 1000;
+            //document.body.append(cosa);
+
+            moveAt(event.pageX, event.pageY);
+
+            function moveAt(pageX, pageY) {
+                cosa.style.left = pageX - cosa.offsetWidth / 2 + 'px';
+                cosa.style.top = pageY - cosa.offsetHeight / 2 + 'px';
+            }
+
+            function onMouseMove(event) {
+                moveAt(event.pageX, event.pageY);
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+
+            cosa.onmouseup = function(e) {
+                document.removeEventListener('mousemove', onMouseMove);
+                cosa.onmouseup = null;
+				// Aca se suelta
+				suelto(cosa, e.pageX, e.pageY);
+            };
+
+        };
+    </script>
+</body>
+
+</html>
