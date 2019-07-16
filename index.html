@@ -20,17 +20,24 @@
 			width: 150px;
 			position: absolute;
 			left: calc(50% - 100px);
-			top: 100px;
+			top: 200px;
 		}
-.puntos {
+.puntos-c {
 font-family: 'Barriecito', cursive;
-margin: 20px 20x 0 0;
+margin: 200px 20x 0 0;
 }
+.logo {
+	margin: auto;
+	display: block;
+}	
     </style>
+
 </head>
 
 <body>
-    <h1 class="puntos">0</h1>
+	<img class="logo" src="/logo.png"></img>
+	<h1 class="puntos-c">puntos</h1>
+    <h1 class="puntos-c"><span class="puntos">0</span></h1>
 	<div class="cosa-contentor">
 		<img class="cosa" src="/manzana.jpg"></img>	
 	</div>
@@ -121,7 +128,7 @@ margin: 20px 20x 0 0;
 			['/carton.jpg','azul'],
 			['/coca.jpg','amarillo'],
 			['/cuaderno.jpg','azul'],
-			['/banana.jpg','negro'],
+			['/banana.png','negro'],
 			['/naranja.jpg','negro'],
 			['/tetra.png','azul'],
 			['/papel.jpg','azul'],
@@ -170,7 +177,7 @@ setTimeout(() => {
 		
 		function posicionreset(cosa) {
 			cosa.style.left = 'calc(50% - 100px)'
-			cosa.style.top = '100px'
+			cosa.style.top = '200px'
 		}
 		
 		function suelto(cosa, x, y) {
