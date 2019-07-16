@@ -3,7 +3,7 @@
 
 <head>
     <title>pagina web</title>
-
+<link href="https://fonts.googleapis.com/css?family=Barriecito&display=swap" rel="stylesheet">
     <style>
 		.contenedor {
 			margin-top: 300px;	
@@ -22,11 +22,15 @@
 			left: calc(50% - 100px);
 			top: 100px;
 		}
+.puntos {
+font-family: 'Barriecito', cursive;
+margin: 20px 20x 0 0;
+}
     </style>
 </head>
 
 <body>
-    <h1 id="puntos">0</h1>
+    <h1 class="puntos">0</h1>
 	<div class="cosa-contentor">
 		<img class="cosa" src="/manzana.jpg"></img>	
 	</div>
@@ -118,7 +122,7 @@
 			['/coca.jpg','amarillo'],
 			['/cuaderno.jpg','azul'],
 			['/banana.jpg','negro'],
-			['/naranja.jpg','amarillo'],
+			['/naranja.jpg','negro'],
 			['/tetra.png','azul'],
 			['/papel.jpg','azul'],
 			['/mate.jpg','negro']
@@ -145,7 +149,7 @@
 		
 		
 			if (increment) {
-						document.getElementById('puntos').innerHTML++;
+						document.getElementsByClassName('puntos')[0].innerHTML++;
 			
 			explode(x, y);
 }
